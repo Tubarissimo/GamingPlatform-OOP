@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
         GameLibrary gameLibrary = new GameLibrary();
         UserDatabase userDatabase = new UserDatabase();
-        String fileGameList = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform\\src\\application\\gamelist.txt"; 
-        String fileUserDataBase = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform\\src\\application\\userdatabase.txt";
+        String fileGameList = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\gamelist.txt"; 
+        String fileUserDataBase = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\userdatabase.txt";
         int option = -1;
 
 

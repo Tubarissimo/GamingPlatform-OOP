@@ -1,52 +1,58 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
 
+public class CreatorDatabase {
+    private ArrayList<Creator> creatorList;
+    private Creator connectedUser;
+    private ArrayList<String> updateList;
 
-public class UserDatabase {
-    private ArrayList<User> userList;
-    private User connectedUser;
-
-    public UserDatabase()
+    public CreatorDatabase()
     {
-        this.userList = new ArrayList<>();
+        this.creatorList = new ArrayList<>();
         this.connectedUser = null;
+        this.updateList = new ArrayList<>();
     }
 
     // getters
-    public ArrayList<User> getUserList() {
-        return userList;
+    public ArrayList<Creator> getCreatorList() {
+        return creatorList;
     }
-    public User getConnectedUser() {
+    public Creator getConnectedUser() {
         return connectedUser;
     }
 
     // setters
-    public void setConnectedUser(User connectedUser) {
+    public void setConnectedUser(Creator connectedUser) {
         this.connectedUser = connectedUser;
     }
 
     public void registerUser()
     {
-        User newUser = new User(null, null, null, 0, 0, 0);
+        Creator newUser = new Creator(null, null, null, 0);
         Scanner in = new Scanner(System.in);
+        System.out.println("How old are you: ");
+        newUser.setAge(in.nextInt());
+        if (newUser.getAge() < 18)
+        {
+            System.out.println("You're a minor, you don't have permission to create a creator account!!!");
+            return;
+        }
         System.out.println("Type your e-mail adress: ");
         newUser.setEmail(in.nextLine());
         System.out.println("Type your password: ");
         newUser.setPassword(in.nextLine());
         System.out.println("Type your user nickname: ");
         newUser.setNickname(in.nextLine());
-        System.out.println("How old are you: ");
-        newUser.setAge(in.nextInt());
-        userList.add(newUser);
+        creatorList.add(newUser);
         System.out.println("New user created successfully!\n");
     }
 
-    public User validateUser(String email, String password) {
-        for (User user : userList) {
+    public Creator validateUser(String email, String password) {
+        for (Creator user : creatorList) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 return user;
             }
@@ -54,8 +60,8 @@ public class UserDatabase {
         return null;
     }
 
-    public User searchUser(String nickname) {
-        for (User user : userList) {
+    public Creator searchUser(String nickname) {
+        for (Creator user : creatorList) {
             if (user.getNickname().equals(nickname)) {
                 return user;
             }
@@ -83,64 +89,12 @@ public class UserDatabase {
         }
     }
 
-    public void depositCredits()
-    {
-        Scanner in = new Scanner(System.in);
-
-        if (this.getConnectedUser().getAge() < 18)
-        {
-            int confirmation = -1;
-            System.out.println("You must have your parents permission to do that!\n\nParents, do you allow to do the deposit?\n[1] YES   [2] NO\n");
-            confirmation = in.nextInt();
-            if (confirmation == 2)
-            {
-                System.out.println("\nTransaction failed...\nYou don't have your parents permission!\n");
-                return;
-            }
-        }
-        System.out.println("How much credits do you wanna deposit in your account?\n");
-        this.getConnectedUser().setCredits(getConnectedUser().getCredits() + in.nextInt());
-        System.out.println("Deposit made successfully!\n");
-    }
-
     public void logout()
     {
         setConnectedUser(null);
     }
 
-    public void ranking()
-    {
-        Collections.sort(userList, Comparator.comparingInt(User::getScore).reversed());
-
-        int rankRange = Math.min(10, userList.size());
-        System.out.println("\tTop users from Sharkbyte\n");
-        for (int i = 0; i < rankRange; i++) {
-            User user = userList.get(i);
-            System.out.println("\t" + (i + 1) + " >> " + user.getNickname() + ": " + user.getScore() + " points");
-        }
-        System.out.println();
-    }
-
-    public User findMatch(User currentUser) {
-        int targetScore = currentUser.getScore();
-        User bestMatch = null;
-        int minScoreDifference = Integer.MAX_VALUE;
-
-        for (User user : userList) {
-            if (!user.getNickname().equals(currentUser.getNickname())) {
-                int scoreDifference = Math.abs(targetScore - user.getScore());
-
-                if (scoreDifference < minScoreDifference) {
-                    minScoreDifference = scoreDifference;
-                    bestMatch = user;
-                }
-            }
-        }
-
-        return bestMatch;
-    }
-
-    public void sendMessage(User user)
+    public void sendMessage(Creator user)
     {
         Scanner in = new Scanner(System.in);
 
@@ -166,7 +120,7 @@ public class UserDatabase {
         System.out.println("Message sent succesfully\n");
     }
 
-    public String showSentMessages(User user)
+    public String showSentMessages(Creator user)
     {
         StringBuilder messageString = new StringBuilder();
 
@@ -184,7 +138,7 @@ public class UserDatabase {
         }
     }
 
-    public String showReceivedMessages(User user)
+    public String showReceivedMessages(Creator user)
     {
         StringBuilder messageString = new StringBuilder();
 
@@ -202,15 +156,31 @@ public class UserDatabase {
         }
     }
 
+    public void publishUpdates(Creator user)
+    {
+        Scanner in = new Scanner(System.in);
+
+        System.out.println("Type the message of the update you did: ");
+        String message = in.nextLine();
+
+        StringBuilder messageBuilder = new StringBuilder();
+
+        messageBuilder.append("\n\t[ ").append(getConnectedUser().getNickname()).append("'s update ]\n").append(message).append("\n\n");
+
+        this.updateList.add(messageBuilder.toString());
+        user.getPublishedUpdates().add(messageBuilder.toString());
+
+        System.out.println("Update sent succesfully\n");
+    }
+
     @Override
     public String toString() {
         StringBuilder userString = new StringBuilder();
 
-        for (User user : userList) {
+        for (Creator user : creatorList) {
             userString.append(user);
         }
 
         return userString.toString();
     }
-
 }

@@ -2,7 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
-public class AbstractUser {
+public abstract class AbstractUser {
     protected String email;
     protected String password;
     protected String nickname;

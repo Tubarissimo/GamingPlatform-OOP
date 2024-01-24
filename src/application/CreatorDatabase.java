@@ -1,14 +1,13 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Scanner;
 
-public class CreatorDatabase {
+public class CreatorDatabase extends AbstractDatabase{
     private ArrayList<Creator> creatorList;
     private Creator connectedUser;
     private ArrayList<String> updateList;
+    private Scanner in = new Scanner(System.in);
 
     public CreatorDatabase()
     {
@@ -30,25 +29,41 @@ public class CreatorDatabase {
         this.connectedUser = connectedUser;
     }
 
+    @Override
     public void registerUser()
     {
         Creator newUser = new Creator(null, null, null, 0);
-        Scanner in = new Scanner(System.in);
-        System.out.println("How old are you: ");
-        newUser.setAge(in.nextInt());
-        if (newUser.getAge() < 18)
-        {
-            System.out.println("You're a minor, you don't have permission to create a creator account!!!");
-            return;
+
+        try {
+            System.out.println("How old are you: ");
+            newUser.setAge(in.nextInt());
+
+            if (newUser.getAge() < 18)
+            {
+                System.out.println("You're a minor, you don't have permission to create a creator account!!!");
+                return;
+            }
+
+            System.out.println("Type your e-mail adress: ");
+            newUser.setEmail(in.nextLine());
+
+            System.out.println("Type your password: ");
+            newUser.setPassword(in.nextLine());
+
+            System.out.println("Type your user nickname: ");
+            newUser.setNickname(in.nextLine());
+            
+            creatorList.add(newUser);
+            System.out.println("New user created successfully!\n");
         }
-        System.out.println("Type your e-mail adress: ");
-        newUser.setEmail(in.nextLine());
-        System.out.println("Type your password: ");
-        newUser.setPassword(in.nextLine());
-        System.out.println("Type your user nickname: ");
-        newUser.setNickname(in.nextLine());
-        creatorList.add(newUser);
-        System.out.println("New user created successfully!\n");
+        catch (java.util.InputMismatchException e) 
+        {
+            System.out.println("Invalid input.");
+        } 
+        catch (java.util.NoSuchElementException e) 
+        {
+            System.out.println("Error reading input. Please try again.");
+        }
     }
 
     public Creator validateUser(String email, String password) {
@@ -69,6 +84,7 @@ public class CreatorDatabase {
         return null;
     }
 
+    @Override
     public void login()
     {
         Scanner in = new Scanner(System.in);
@@ -89,6 +105,7 @@ public class CreatorDatabase {
         }
     }
 
+    @Override
     public void logout()
     {
         setConnectedUser(null);
@@ -171,6 +188,27 @@ public class CreatorDatabase {
         user.getPublishedUpdates().add(messageBuilder.toString());
 
         System.out.println("Update sent succesfully\n");
+    }
+
+    public void createGame(Creator connectedCreator,GameLibrary gameLibrary)
+    {
+        Scanner in = new Scanner(System.in);
+
+        Game newGame = new Game(null, 0);
+
+        System.out.println("What's the name of the game?");
+        newGame.setName(in.nextLine());
+        System.out.println("How much it costs?");
+        newGame.setPrice(in.nextInt());
+
+        gameLibrary.getGameList().add(newGame);
+        connectedCreator.getCreatedGames().getGameList().add(newGame);
+        System.out.println("Game published succesfully!\n");
+    }
+
+    public void showCreatedGames(Creator connectedCreator)
+    {
+        System.out.println(connectedCreator.getCreatedGames());
     }
 
     @Override

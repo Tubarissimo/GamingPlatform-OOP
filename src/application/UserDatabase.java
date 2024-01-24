@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class UserDatabase {
+public class UserDatabase extends AbstractDatabase{
     private ArrayList<User> userList;
     private User connectedUser;
 
@@ -29,6 +29,7 @@ public class UserDatabase {
         this.connectedUser = connectedUser;
     }
 
+    @Override
     public void registerUser()
     {
         User newUser = new User(null, null, null, 0, 0, 0);
@@ -63,6 +64,7 @@ public class UserDatabase {
         return null;
     }
 
+    @Override
     public void login()
     {
         Scanner in = new Scanner(System.in);
@@ -103,6 +105,7 @@ public class UserDatabase {
         System.out.println("Deposit made successfully!\n");
     }
 
+    @Override
     public void logout()
     {
         setConnectedUser(null);

@@ -11,8 +11,10 @@ public class Main {
     public static void main(String[] args) {
         GameLibrary gameLibrary = new GameLibrary();
         UserDatabase userDatabase = new UserDatabase();
+        CreatorDatabase creatorDatabase = new CreatorDatabase();
         String fileGameList = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\gamelist.txt"; 
         String fileUserDataBase = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\userdatabase.txt";
+        String fileCreatorDatabase = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\creatordatabase.txt";
         int option = -1;
 
 
@@ -60,6 +62,26 @@ public class Main {
             e.printStackTrace();
         }
         
+        // importing creators database from creatordatabase.txt
+        try 
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(fileCreatorDatabase));
+            String line = reader.readLine();
+
+            while (line != null)
+            {
+                String[] dataStrings = line.split(" ");
+
+                Creator newUser = new Creator(dataStrings[0], dataStrings[1], dataStrings[2],Integer.parseInt(dataStrings[3]));
+
+                creatorDatabase.getCreatorList().add(newUser);
+                
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Scanner input = new Scanner(System.in);
         do
         {

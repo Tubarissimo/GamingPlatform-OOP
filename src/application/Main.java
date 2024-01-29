@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-public class Main {
+public class MainOld {
     public static void main(String[] args) {
         GameLibrary gameLibrary = new GameLibrary();
         UserDatabase userDatabase = new UserDatabase();
@@ -88,7 +88,7 @@ public class Main {
             for (User user : userDatabase.getUserList()) {
                 user.updateScore();
             }
-            if (userDatabase.getConnectedUser() == null)
+            if (userDatabase.getConnectedUser() == null || creatorDatabase.getConnectedUser() == null)
             {
                 System.out.println(
                 "\t<<   SHARKBYTE   >>\n\n" +
@@ -143,7 +143,7 @@ public class Main {
                     break;
                 }
             }
-            else
+            else if (userDatabase.getConnectedUser() != null || creatorDatabase.getConnectedUser() == null)
             {
                 System.out.println(userDatabase.getConnectedUser());
                 System.out.println(
@@ -233,6 +233,10 @@ public class Main {
                     System.out.println("Choose a valid option.\n\n");
                     break;
                 }
+            }
+            else
+            {
+                //////////////////////////////////
             }
         }while(option != 0);
     }

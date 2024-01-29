@@ -188,6 +188,7 @@ public class CreatorDatabase extends AbstractDatabase{
         user.getPublishedUpdates().add(messageBuilder.toString());
 
         System.out.println("Update sent succesfully\n");
+        return;
     }
 
     public void createGame(Creator connectedCreator,GameLibrary gameLibrary)
@@ -204,6 +205,7 @@ public class CreatorDatabase extends AbstractDatabase{
         gameLibrary.getGameList().add(newGame);
         connectedCreator.getCreatedGames().getGameList().add(newGame);
         System.out.println("Game published succesfully!\n");
+        return;
     }
 
     public void showCreatedGames(Creator connectedCreator)

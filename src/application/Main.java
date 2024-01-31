@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-public class MainOld {
+public class Main {
     public static void main(String[] args) {
         GameLibrary gameLibrary = new GameLibrary();
         UserDatabase userDatabase = new UserDatabase();
@@ -88,17 +88,20 @@ public class MainOld {
             for (User user : userDatabase.getUserList()) {
                 user.updateScore();
             }
-            if (userDatabase.getConnectedUser() == null || creatorDatabase.getConnectedUser() == null)
+            if (userDatabase.getConnectedUser() == null && creatorDatabase.getConnectedUser() == null)
             {
                 System.out.println(
                 "\t<<   SHARKBYTE   >>\n\n" +
                 "[1] SHOP\n" +
-                "[2] LOGIN\n" +
-                "[3] REGISTER\n" +
-                "[4] SHOW USERS\n" + 
-                "[5] RANKING\n" +
-                "[6] SharkByteFAQ\n" +
-                "[7] UPDATES AND PATCHES\n" +
+                "[2] LOGIN AS USER\n" +
+                "[3] LOGIN AS CREATOR\n" +
+                "[4] REGISTER USER\n" +
+                "[5] REGISTER CREATOR\n" +
+                "[6] SHOW USERS\n" + 
+                "[7] SHOW CREATORS\n" +
+                "[8] RANKING\n" +
+                "[9] SharkByteFAQ\n" +
+                "[10] UPDATES AND PATCHES\n" +
                 "[0] EXIT\n\n"
                 );
                 option = input.nextInt();
@@ -114,21 +117,33 @@ public class MainOld {
                     break;
                 case 3:
                     clearConsole();
-                    userDatabase.registerUser();
+                    creatorDatabase.login();
                     break;
                 case 4:
                     clearConsole();
-                    System.out.println(userDatabase);
+                    userDatabase.registerUser();
                     break;
                 case 5:
                     clearConsole();
-                    userDatabase.ranking();
+                    creatorDatabase.registerUser();
                     break;
                 case 6:
                     clearConsole();
-                    sharkByteFAQ();
+                    System.out.println(userDatabase);
                     break;
                 case 7:
+                    clearConsole();
+                    System.out.println(creatorDatabase);
+                    break;
+                case 8:
+                    clearConsole();
+                    userDatabase.ranking();
+                    break;
+                case 9:
+                    clearConsole();
+                    sharkByteFAQ();
+                    break;
+                case 10:
                     clearConsole();
                     gameLibrary.updatesAndPatches();
                     break;
@@ -143,7 +158,7 @@ public class MainOld {
                     break;
                 }
             }
-            else if (userDatabase.getConnectedUser() != null || creatorDatabase.getConnectedUser() == null)
+            else if (userDatabase.getConnectedUser() != null && creatorDatabase.getConnectedUser() == null)
             {
                 System.out.println(userDatabase.getConnectedUser());
                 System.out.println(
@@ -234,9 +249,43 @@ public class MainOld {
                     break;
                 }
             }
-            else
+            else if (userDatabase.getConnectedUser() == null && creatorDatabase.getConnectedUser() != null)
             {
-                //////////////////////////////////
+                System.out.println(creatorDatabase.getConnectedUser());
+                System.out.println(
+                    "\t<<   SHARKBYTE   >>\n\n" +
+                    "[1] SHOP\n" +
+                    "[2] CERATED GAMES LIBRARY\n" +
+                    "[3] CREATE GAME\n" + 
+                    "[4] LOGOUT\n" + 
+                    "[0] EXIT\n\n"
+                );
+                option = input.nextInt();
+
+                switch (option) {
+                    case 1:
+                        clearConsole();
+                        System.out.println(gameLibrary);
+                        break;
+                    case 2:
+                        System.out.println(creatorDatabase.getConnectedUser().showLibrary());
+                        break;
+                    case 3:
+                        creatorDatabase.createGame(creatorDatabase.getConnectedUser(), gameLibrary);
+                        break;
+                    case 4:
+                        creatorDatabase.logout();
+                        break;
+                    case 0:
+                        clearConsole();
+                        input.close();
+                        System.out.println("Thanks for using Sharkbyte services!\n");
+                        break;
+                    default:
+                        clearConsole();
+                        System.out.println("Choose a valid option.\n\n");
+                        break;
+                }
             }
         }while(option != 0);
     }

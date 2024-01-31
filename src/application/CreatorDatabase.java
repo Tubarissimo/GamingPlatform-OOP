@@ -6,14 +6,12 @@ import java.util.Scanner;
 public class CreatorDatabase extends AbstractDatabase{
     private ArrayList<Creator> creatorList;
     private Creator connectedUser;
-    private ArrayList<String> updateList;
     private Scanner in = new Scanner(System.in);
 
     public CreatorDatabase()
     {
         this.creatorList = new ArrayList<>();
         this.connectedUser = null;
-        this.updateList = new ArrayList<>();
     }
 
     // getters
@@ -35,26 +33,23 @@ public class CreatorDatabase extends AbstractDatabase{
         Creator newUser = new Creator(null, null, null, 0);
 
         try {
+            System.out.println("Type your e-mail adress: ");
+            newUser.setEmail(in.nextLine());
+            System.out.println("Type your password: ");
+            newUser.setPassword(in.nextLine());
+            System.out.println("Type your user nickname: ");
+            newUser.setNickname(in.nextLine());
             System.out.println("How old are you: ");
             newUser.setAge(in.nextInt());
-
+            
             if (newUser.getAge() < 18)
             {
                 System.out.println("You're a minor, you don't have permission to create a creator account!!!");
                 return;
             }
 
-            System.out.println("Type your e-mail adress: ");
-            newUser.setEmail(in.nextLine());
-
-            System.out.println("Type your password: ");
-            newUser.setPassword(in.nextLine());
-
-            System.out.println("Type your user nickname: ");
-            newUser.setNickname(in.nextLine());
-            
             creatorList.add(newUser);
-            System.out.println("New user created successfully!\n");
+            System.out.println("New creator created successfully!\n");
         }
         catch (java.util.InputMismatchException e) 
         {
@@ -173,24 +168,6 @@ public class CreatorDatabase extends AbstractDatabase{
         }
     }
 
-    public void publishUpdates(Creator user)
-    {
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("Type the message of the update you did: ");
-        String message = in.nextLine();
-
-        StringBuilder messageBuilder = new StringBuilder();
-
-        messageBuilder.append("\n\t[ ").append(getConnectedUser().getNickname()).append("'s update ]\n").append(message).append("\n\n");
-
-        this.updateList.add(messageBuilder.toString());
-        user.getPublishedUpdates().add(messageBuilder.toString());
-
-        System.out.println("Update sent succesfully\n");
-        return;
-    }
-
     public void createGame(Creator connectedCreator,GameLibrary gameLibrary)
     {
         Scanner in = new Scanner(System.in);
@@ -210,6 +187,11 @@ public class CreatorDatabase extends AbstractDatabase{
 
     public void showCreatedGames(Creator connectedCreator)
     {
+        if (connectedCreator.getCreatedGames() == null)
+        {
+            System.out.println("You haven't created any games yet...\n");
+            return;
+        }
         System.out.println(connectedCreator.getCreatedGames());
     }
 

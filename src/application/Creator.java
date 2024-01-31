@@ -1,10 +1,7 @@
 package application;
 
-import java.util.ArrayList;
-
 public class Creator extends AbstractUser {
     private GameLibrary createdGames;
-    private ArrayList<String> publishedUpdates;
 
 
     public Creator(String email,String password,String nickname,int age)
@@ -12,17 +9,12 @@ public class Creator extends AbstractUser {
         super(email,password,nickname,age);
 
         this.createdGames = new GameLibrary();
-        this.publishedUpdates = new ArrayList<>();
     }
 
     // GETTERS
     public GameLibrary getCreatedGames() {
         return createdGames;
     }
-    public ArrayList<String> getPublishedUpdates() {
-        return publishedUpdates;
-    }
-
 
     // SETTERS
     public void setEmail(String email) {
@@ -38,5 +30,26 @@ public class Creator extends AbstractUser {
         this.age = age;
     }
 
+    public String showLibrary()
+    {
+        StringBuilder gameString = new StringBuilder();
 
+        gameString.append("\tLIBRARY\n\n");
+        for (Game game : createdGames.getGameList()) {
+            gameString.append("\t").append(createdGames.getGameList().indexOf(game)+1).append(" >> ").append(game.getName()).append("\n");
+        }
+        gameString.append("\n");
+
+        if (gameString.toString() == "") return "You have created no game yet...\n";
+        return gameString.toString();
+    }
+
+    @Override
+    public String toString() 
+    {
+        return  "NAME:\t " + this.nickname + "\n\n" + 
+                "AGE:\t " + this.age + "\n\n" +
+                "CONTACT: " + this.email + "\n\n" +
+                "\n\n";
+    }
 }

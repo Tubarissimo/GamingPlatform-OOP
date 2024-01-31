@@ -34,16 +34,21 @@ public class UserDatabase extends AbstractDatabase{
     {
         User newUser = new User(null, null, null, 0, 0, 0);
         Scanner in = new Scanner(System.in);
-        System.out.println("Type your e-mail adress: ");
-        newUser.setEmail(in.nextLine());
-        System.out.println("Type your password: ");
-        newUser.setPassword(in.nextLine());
-        System.out.println("Type your user nickname: ");
-        newUser.setNickname(in.nextLine());
-        System.out.println("How old are you: ");
-        newUser.setAge(in.nextInt());
-        userList.add(newUser);
-        System.out.println("New user created successfully!\n");
+        try {
+            System.out.println("Type your e-mail adress: ");
+            newUser.setEmail(in.nextLine());
+            System.out.println("Type your password: ");
+            newUser.setPassword(in.nextLine());
+            System.out.println("Type your user nickname: ");
+            newUser.setNickname(in.nextLine());
+            System.out.println("How old are you: ");
+            newUser.setAge(in.nextInt());
+            userList.add(newUser);
+            System.out.println("New user created successfully!\n");
+            
+        } catch (Exception e) {
+            System.out.println("An error occured during the registration...");
+        }
     }
 
     public User validateUser(String email, String password) {
@@ -69,40 +74,51 @@ public class UserDatabase extends AbstractDatabase{
     {
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Type your e-mail adress: ");
-        String emailString = in.nextLine();
-        System.out.println("Type your password: ");
-        String passwordString = in.nextLine();
-        
-        if (validateUser(emailString, passwordString) != null)
-        {
-            setConnectedUser(validateUser(emailString, passwordString));
-            System.out.println("Logged in successfully!\n");
-        }
-        else
-        {
-            System.out.println("User not found\n");
-        }
+        try {
+            System.out.println("Type your e-mail adress: ");
+            String emailString = in.nextLine();
+            System.out.println("Type your password: ");
+            String passwordString = in.nextLine();
+            
+            if (validateUser(emailString, passwordString) != null)
+            {
+                setConnectedUser(validateUser(emailString, passwordString));
+                System.out.println("Logged in successfully!\n");
+            }
+            else
+            {
+                System.out.println("User not found\n");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("An error occurred during login...");
+        } 
     }
 
     public void depositCredits()
     {
         Scanner in = new Scanner(System.in);
 
-        if (this.getConnectedUser().getAge() < 18)
-        {
-            int confirmation = -1;
-            System.out.println("You must have your parents permission to do that!\n\nParents, do you allow to do the deposit?\n[1] YES   [2] NO\n");
-            confirmation = in.nextInt();
-            if (confirmation == 2)
+        try {
+            if (this.getConnectedUser().getAge() < 18)
             {
-                System.out.println("\nTransaction failed...\nYou don't have your parents permission!\n");
-                return;
+                int confirmation = -1;
+                System.out.println("You must have your parents permission to do that!\n\nParents, do you allow to do the deposit?\n[1] YES   [2] NO\n");
+                confirmation = in.nextInt();
+                if (confirmation == 2)
+                {
+                    System.out.println("\nTransaction failed...\nYou don't have your parents permission!\n");
+                    return;
+                }
             }
+            System.out.println("How much credits do you wanna deposit in your account?\n");
+            this.getConnectedUser().setCredits(getConnectedUser().getCredits() + in.nextInt());
+            System.out.println("Deposit made successfully!\n");
+            
+        } catch (Exception e) {
+            System.out.println("An error occurred during the deposit...");
         }
-        System.out.println("How much credits do you wanna deposit in your account?\n");
-        this.getConnectedUser().setCredits(getConnectedUser().getCredits() + in.nextInt());
-        System.out.println("Deposit made successfully!\n");
+
     }
 
     @Override
@@ -147,26 +163,32 @@ public class UserDatabase extends AbstractDatabase{
     {
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Write the nickname of the user you wanna chat: ");
-        String searchedUser = in.nextLine();
+        try {
+            System.out.println("Write the nickname of the user you wanna chat: ");
+            String searchedUser = in.nextLine();
+    
+            if (searchUser(searchedUser) == null)
+            {
+                System.out.println("User not found\n");
+                return;
+            }
+    
+            System.out.println("Type the message tou wanna send to this user: ");
+            String message = in.nextLine();
+    
+            StringBuilder messageBuilder = new StringBuilder();
+    
+            messageBuilder.append("\n\t[ ").append(getConnectedUser().getNickname()).append(" ]\n").append(message).append("\n\n");
+    
+            user.getSentChatMessages().add(messageBuilder.toString());
+            searchUser(searchedUser).getReceivedChatMessages().add(messageBuilder.toString());
+    
+            System.out.println("Message sent succesfully\n");
+            
+        } catch (Exception e) {
+            System.out.println("An error occurred during message sending...");
+        } 
 
-        if (searchUser(searchedUser) == null)
-        {
-            System.out.println("User not found\n");
-            return;
-        }
-
-        System.out.println("Type the message tou wanna send to this user: ");
-        String message = in.nextLine();
-
-        StringBuilder messageBuilder = new StringBuilder();
-
-        messageBuilder.append("\n\t[ ").append(getConnectedUser().getNickname()).append(" ]\n").append(message).append("\n\n");
-
-        user.getSentChatMessages().add(messageBuilder.toString());
-        searchUser(searchedUser).getReceivedChatMessages().add(messageBuilder.toString());
-
-        System.out.println("Message sent succesfully\n");
     }
 
     public String showSentMessages(User user)

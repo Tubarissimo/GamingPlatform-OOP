@@ -84,19 +84,23 @@ public class CreatorDatabase extends AbstractDatabase{
     {
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Type your e-mail adress: ");
-        String emailString = in.nextLine();
-        System.out.println("Type your password: ");
-        String passwordString = in.nextLine();
-        
-        if (validateUser(emailString, passwordString) != null)
-        {
-            setConnectedUser(validateUser(emailString, passwordString));
-            System.out.println("Logged in successfully!\n");
-        }
-        else
-        {
-            System.out.println("User not found\n");
+        try {
+            System.out.println("Type your e-mail adress: ");
+            String emailString = in.nextLine();
+            System.out.println("Type your password: ");
+            String passwordString = in.nextLine();
+            
+            if (validateUser(emailString, passwordString) != null)
+            {
+                setConnectedUser(validateUser(emailString, passwordString));
+                System.out.println("Logged in successfully!\n");
+            }
+            else
+            {
+                System.out.println("User not found\n");
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred during login...");
         }
     }
 
@@ -106,83 +110,25 @@ public class CreatorDatabase extends AbstractDatabase{
         setConnectedUser(null);
     }
 
-    public void sendMessage(Creator user)
-    {
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("Write the nickname of the user you wanna chat: ");
-        String searchedUser = in.nextLine();
-
-        if (searchUser(searchedUser) == null)
-        {
-            System.out.println("User not found\n");
-            return;
-        }
-
-        System.out.println("Type the message tou wanna send to this user: ");
-        String message = in.nextLine();
-
-        StringBuilder messageBuilder = new StringBuilder();
-
-        messageBuilder.append("\n\t[ ").append(getConnectedUser().getNickname()).append(" ]\n").append(message).append("\n\n");
-
-        user.getSentChatMessages().add(messageBuilder.toString());
-        searchUser(searchedUser).getReceivedChatMessages().add(messageBuilder.toString());
-
-        System.out.println("Message sent succesfully\n");
-    }
-
-    public String showSentMessages(Creator user)
-    {
-        StringBuilder messageString = new StringBuilder();
-
-        if (user.getSentChatMessages().isEmpty() == true)
-        {
-            return "You have no sent messages\n";
-        }
-        else
-        {
-            for (String message : user.getSentChatMessages()) {
-                messageString.append(message);
-            }
-            
-            return messageString.toString();
-        }
-    }
-
-    public String showReceivedMessages(Creator user)
-    {
-        StringBuilder messageString = new StringBuilder();
-
-        if (user.getReceivedChatMessages().isEmpty() == true)
-        {
-            return "You have no messages\n";
-        }
-        else
-        {
-            for (String message : user.getReceivedChatMessages()) {
-                messageString.append(message);
-            }
-            
-            return messageString.toString();
-        }
-    }
-
     public void createGame(Creator connectedCreator,GameLibrary gameLibrary)
     {
         Scanner in = new Scanner(System.in);
 
-        Game newGame = new Game(null, 0);
+        try {
+            Game newGame = new Game(null, 0);
 
-        System.out.println("What's the name of the game?");
-        newGame.setName(in.nextLine());
-        System.out.println("How much it costs?");
-        newGame.setPrice(in.nextInt());
+            System.out.println("What's the name of the game?");
+            newGame.setName(in.nextLine());
+            System.out.println("How much it costs?");
+            newGame.setPrice(in.nextInt());
 
-        gameLibrary.getGameList().add(newGame);
-        connectedCreator.getCreatedGames().getGameList().add(newGame);
-        System.out.println("Game published succesfully!\n");
-        return;
+            gameLibrary.getGameList().add(newGame);
+            connectedCreator.getCreatedGames().getGameList().add(newGame);
+            System.out.println("Game published succesfully!\n");
+            return;
+        } catch (Exception e) {
+            System.out.println("Invalid game information...");
+        }
     }
 
     public void showCreatedGames(Creator connectedCreator)

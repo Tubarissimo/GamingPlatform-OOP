@@ -8,7 +8,8 @@ public class User extends AbstractUser{
     private double credits;
     private int moneySpent;
     private GameLibrary ownedGames;
-    private ArrayList<String> updateList;
+    private ArrayList<String> sentChatMessages;
+    private ArrayList<String> receivedChatMessages;
 
     
     public User(String email,String password,String nickname,int age,int score,double credits)
@@ -19,6 +20,8 @@ public class User extends AbstractUser{
         this.credits = credits;
         this.moneySpent = 0;
         this.ownedGames = new GameLibrary();
+        this.sentChatMessages = new ArrayList<>();
+        this.receivedChatMessages = new ArrayList<>();
     }
 
 
@@ -35,7 +38,13 @@ public class User extends AbstractUser{
     public GameLibrary getOwnedGames() {
         return ownedGames;
     }
-
+    public ArrayList<String> getSentChatMessages() {
+        return sentChatMessages;
+    }
+    public ArrayList<String> getReceivedChatMessages() {
+        return receivedChatMessages;
+    }
+    
     // setters
     public void setEmail(String email) {
         this.email = email;

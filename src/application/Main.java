@@ -12,9 +12,9 @@ public class Main {
         GameLibrary gameLibrary = new GameLibrary();
         UserDatabase userDatabase = new UserDatabase();
         CreatorDatabase creatorDatabase = new CreatorDatabase();
-        String fileGameList = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\gamelist.txt"; 
-        String fileUserDataBase = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\userdatabase.txt";
-        String fileCreatorDatabase = "C:\\Users\\paugu\\OneDrive\\Documentos\\codes\\repositorio\\GamingPlatform-OOP\\src\\application\\creatordatabase.txt";
+        String fileGameList = "src\\application\\gamelist.txt"; 
+        String fileUserDataBase = "src\\application\\userdatabase.txt";
+        String fileCreatorDatabase = "src\\application\\creatordatabase.txt";
         int option = -1;
 
 
